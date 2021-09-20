@@ -79,11 +79,11 @@ ExceptionHandler (ExceptionType which)
 		case SC_Halt:
 		  {
 		    DEBUG ('s', "Shutdown, initiated by user program.\n");
-			printf("On passe ici\n");
+			printf("On passe dans SC_Halt\n");
 		    interrupt->Powerdown ();
 		    break;
 		  }
-		case SC_Exit:
+		/*case SC_Exit:
 		  {
 			int exit = machine->ReadRegister (4);
 		    DEBUG ('s', "Shutdown, initiated by user program.\n");
@@ -91,7 +91,7 @@ ExceptionHandler (ExceptionType which)
 			printf("On passe ici dans le case SC_Exit\n");
 		    interrupt->Powerdown ();
 		    break;
-		  }
+		  }*/
 		default:
 		  {
 		    printf("Unimplemented system call %d\n", type);

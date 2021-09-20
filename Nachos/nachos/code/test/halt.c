@@ -15,8 +15,8 @@
 int
 main ()
 {
-    //Halt ();
-    Exil(35);
+    Halt ();
+    //Exil(35);
 
     /* not reached */
     return 0;
