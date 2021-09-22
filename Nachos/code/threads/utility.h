@@ -27,7 +27,7 @@
 
 // Miscellaneous useful routines
 
-#include <bool.h>	// Boolean values
+#include "bool.h"    // Boolean values
 #include <algorithm>	// min
 
 // Divide and either round up or down 

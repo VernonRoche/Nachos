@@ -1,5 +1,5 @@
 make clean -C ../
-make -C ../
 make clean
+make -C ../
 make
 ./nachos -x ../test/putchar
