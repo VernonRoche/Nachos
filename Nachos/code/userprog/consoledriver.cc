@@ -11,7 +11,7 @@ ConsoleDriver::ConsoleDriver(const char *in, const char *out)
 {
 readAvail = new Semaphore("read avail", 0);
 writeDone = new Semaphore("write done", 0);
-console = new Console (in, out, readAvail, writeDone, NULL);
+console = new Console (in, out, ReadAvailHandler, WriteDoneHandler, NULL);
 }
 ConsoleDriver::~ConsoleDriver()
 {
