@@ -16,6 +16,12 @@
 #include "stats.h"
 #include "timer.h"
 
+#ifdef CHANGED
+#ifdef USER_PROGRAM
+extern ConsoleDriver *consoledriver;
+#endif
+#endif
+
 // Initialization and cleanup routines
 extern void Initialize (int argc, char **argv);	// Initialization,
 						// called before anything else

@@ -118,6 +118,7 @@ main (int argc, char **argv)
 	  if (!strcmp (*argv, "-x"))
 	    {			// run a user program
 		ASSERT (argc > 1);
+        consoledriver = new ConsoleDriver(NULL, NULL);
 		StartProcess (*(argv + 1));
 		argCount = 2;
 	    }
