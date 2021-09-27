@@ -18,6 +18,7 @@
 
 #ifdef CHANGED
 #ifdef USER_PROGRAM
+#include <consoledriver.h>
 extern ConsoleDriver *consoledriver;
 #endif
 #endif

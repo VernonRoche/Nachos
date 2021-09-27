@@ -232,6 +232,9 @@ Cleanup ()
 #endif
 
 #ifdef USER_PROGRAM
+    #ifdef CHANGED
+     delete(consoledriver);
+    #endif
     if (machine) {
 	delete machine;
 	machine = NULL;
