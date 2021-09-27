@@ -79,10 +79,17 @@ ExceptionHandler (ExceptionType which)
 		case SC_Halt:
 		  {
 		    DEBUG ('s', "Shutdown, initiated by user program.\n");
-			printf("On passe dans SC_Halt\n");
 		    interrupt->Powerdown ();
 		    break;
 		  }
+        #ifdef CHANGED
+        case SC_PutChar:
+        {
+            DEBUG('s',"PutChar\n ");
+            break;
+        }
+        #endif
+
 		/*case SC_Exit:
 		  {
 			int exit = machine->ReadRegister (4);
