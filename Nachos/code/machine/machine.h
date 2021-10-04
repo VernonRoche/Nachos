@@ -115,6 +115,9 @@ class Machine:public dontcopythis {
 
 // Routines callable by the Nachos kernel
     void Run();	 		// Run a user program
+    #ifdef CHANGED
+    int copyStringFromMachine(int from, char *to, unsigned size);
+    #endif
 
     int ReadRegister(int num);	// read the contents of a CPU register
 

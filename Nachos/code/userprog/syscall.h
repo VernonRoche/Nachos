@@ -136,7 +136,7 @@ void Yield ();
 
 #ifdef CHANGED
     void PutChar(char c);
-    void PutString(char c);
+    void PutString(const char *c);
 #endif
 
 #endif // IN_USER_MODE

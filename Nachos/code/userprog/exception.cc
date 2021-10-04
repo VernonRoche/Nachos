@@ -24,6 +24,10 @@
 #include "copyright.h"
 #include "system.h"
 #include "syscall.h"
+#ifdef CHANGED
+#include "consoledriver.h"
+#include "utilities.h"
+#endif
 
 //----------------------------------------------------------------------
 // UpdatePC : Increments the Program Counter register in order to resume
@@ -86,11 +90,18 @@ ExceptionHandler (ExceptionType which)
         case SC_PutChar:
         {
             DEBUG('s',"PutChar\n ");
+            char c= machine->ReadRegister(4);
+            consoledriver->PutChar(c);
             break;
         }
         case SC_PutString:
         {
+            unsigned int max_string_size=20;
             DEBUG('s',"PutString\n ");
+            int from = machine->ReadRegister(4);
+            char to[20];
+            int string_size=machine->copyStringFromMachine(from, to, max_string_size);
+            consoledriver->PutString(to);
             break;
         }
         #endif

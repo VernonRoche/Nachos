@@ -124,7 +124,24 @@ Machine::RaiseException(ExceptionType which, int badVAddr)
 //
 //	So just allow single-stepping, and printing the contents of memory.
 //----------------------------------------------------------------------
+#ifdef CHANGED
 
+int Machine::copyStringFromMachine(int from, char *to, unsigned size){
+    int c=0;
+    for (unsigned int i=0; i<size ; i++, from++){
+        this->ReadMem(from, 1, &c);
+        to[i] = (char) c;
+        if (to[i]=='\0'){
+            return i+1;
+        }
+    }
+    if (to[size-1]!='\0'){
+        to[size-1]='\0';
+    }
+    return size;
+}
+
+#endif
 void Machine::Debugger()
 {
     char *buf = new char[80];
