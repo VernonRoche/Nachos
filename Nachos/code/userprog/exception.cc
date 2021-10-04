@@ -99,9 +99,10 @@ ExceptionHandler (ExceptionType which)
             unsigned int max_string_size=20;
             DEBUG('s',"PutString\n ");
             int from = machine->ReadRegister(4);
-            char to[20];
-            int string_size=machine->copyStringFromMachine(from, to, max_string_size);
-            consoledriver->PutString(to);
+            char to[MAX_STRING_SIZE];
+            while(machine->copyStringFromMachine(from, to, max_string_size)!=MAX_STRING_SIZE){
+                consoledriver->PutString(to);
+            }
             break;
         }
         #endif

@@ -2,6 +2,6 @@
 
 
 int main(){
-    PutString("fpsokefpaoskef\n");
+    PutString("Les chaussetes de l'archiduchesse sont elles seches ou archiseches\n");
     Halt();
 }

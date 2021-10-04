@@ -20,6 +20,7 @@
 #ifdef USER_PROGRAM
 #include <consoledriver.h>
 extern ConsoleDriver *consoledriver;
+#define MAX_STRING_SIZE 32
 #endif
 #endif
 

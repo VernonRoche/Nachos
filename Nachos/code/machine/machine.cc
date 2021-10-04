@@ -128,7 +128,7 @@ Machine::RaiseException(ExceptionType which, int badVAddr)
 
 int Machine::copyStringFromMachine(int from, char *to, unsigned size){
     int c=0;
-    for (unsigned int i=0; i<size ; i++, from++){
+    for (unsigned int i=0; i<size-1 ; i++, from++){
         this->ReadMem(from, 1, &c);
         to[i] = (char) c;
         if (to[i]=='\0'){
