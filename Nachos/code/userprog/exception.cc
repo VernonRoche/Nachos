@@ -96,12 +96,14 @@ ExceptionHandler (ExceptionType which)
         }
         case SC_PutString:
         {
-            unsigned int max_string_size=20;
             DEBUG('s',"PutString\n ");
             int from = machine->ReadRegister(4);
             char to[MAX_STRING_SIZE];
-            while(machine->copyStringFromMachine(from, to, max_string_size)!=MAX_STRING_SIZE){
+            int chars_read=machine->copyStringFromMachine(from, to, MAX_STRING_SIZE);
+            while(chars_read>1){
                 consoledriver->PutString(to);
+                from+=MAX_STRING_SIZE-1;
+                chars_read=machine->copyStringFromMachine(from, to, MAX_STRING_SIZE);
             }
             break;
         }

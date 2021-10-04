@@ -38,8 +38,7 @@ int ConsoleDriver::GetChar()
 #ifdef CHANGED
 void ConsoleDriver::PutString(const char s[])
 {
-    int size=20;
-    for(int i=0; i<size ; i++){
+    for(int i=0; i<MAX_STRING_SIZE ; i++){
         this->PutChar( (int) s[i]);
         if (s[i]=='\0'){
             break;
