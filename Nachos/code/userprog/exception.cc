@@ -88,6 +88,11 @@ ExceptionHandler (ExceptionType which)
             DEBUG('s',"PutChar\n ");
             break;
         }
+        case SC_PutString:
+        {
+            DEBUG('s',"PutString\n ");
+            break;
+        }
         #endif
 
 		/*case SC_Exit:

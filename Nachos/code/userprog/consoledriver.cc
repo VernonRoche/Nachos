@@ -3,6 +3,9 @@
 #include "system.h"
 #include "consoledriver.h"
 #include "synch.h"
+#ifdef CHANGED
+    #define MAX_STRING_SIZE 20
+#endif
 static Semaphore *readAvail;
 static Semaphore *writeDone;
 static void ReadAvailHandler(void *arg) { (void) arg; readAvail->V(); }
@@ -36,7 +39,14 @@ int ConsoleDriver::GetChar()
 }
 void ConsoleDriver::PutString(const char s[])
 {
-// ...
+    #ifdef CHANGED
+    for(int i=0; i<MAX_STRING_SIZE ; i++){
+        this->PutChar( (int) s[i]);
+        if (s[i]=='\0'){
+            break;
+        }
+    }
+    #endif
 }
 void ConsoleDriver::GetString(char *s, int n)
 {
