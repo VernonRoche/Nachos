@@ -141,6 +141,18 @@ int Machine::copyStringFromMachine(int from, char *to, unsigned size){
     return size;
 }
 
+int Machine::copyStringToMachine(char* from, int to, unsigned size){
+    int c=0;
+    for (unsigned int i=0; i<size-1 ; i++, from++){
+        c= (int) from[i];
+        this->WriteMem(to, 1, c);
+        if (((char) c)=='\0'){
+            return i+1;
+        }
+    }
+    return size;
+}
+
 #endif
 void Machine::Debugger()
 {

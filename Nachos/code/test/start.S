@@ -162,6 +162,22 @@ PutString:
 	syscall
 	j	$31 /*r31 = adresse de retour, return*/
 	.end PutString
+
+    .globl GetChar
+    .ent   GetChar
+GetChar:
+	addiu $2,$0,SC_GetChar /*r2 <- SC_GetChar*/
+	syscall
+	j	$31 /*r31 = adresse de retour, return*/
+	.end GetChar
+
+    .globl GetString
+    .ent   GetString
+GetString:
+	addiu $2,$0,SC_GetString /*r2 <- SC_GetString*/
+	syscall
+	j	$31 /*r31 = adresse de retour, return*/
+	.end GetString
 #endif
 
 /* dummy function to keep gcc happy */

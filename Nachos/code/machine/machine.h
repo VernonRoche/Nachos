@@ -117,6 +117,7 @@ class Machine:public dontcopythis {
     void Run();	 		// Run a user program
     #ifdef CHANGED
     int copyStringFromMachine(int from, char *to, unsigned size);
+    int copyStringToMachine(char* from, int to, unsigned size);
     #endif
 
     int ReadRegister(int num);	// read the contents of a CPU register

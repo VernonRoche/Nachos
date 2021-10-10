@@ -49,6 +49,16 @@ void ConsoleDriver::PutString(const char s[])
 #endif
 void ConsoleDriver::GetString(char *s, int n)
 {
-// ...
+#ifdef CHANGED
+    for(int i=0; i<n-1 ; i++){
+        s[i]=(char) this->GetChar();
+        if (s[i]=='\0' || s[i]=='\n'){
+            break;
+        }
+    }
+    if (s[n-2]!='\0'){
+        s[n-1]='\0';
+    }
+#endif
 }
 #endif // CHANGED

@@ -86,12 +86,20 @@ ExceptionHandler (ExceptionType which)
 		    interrupt->Powerdown ();
 		    break;
 		  }
-        #ifdef CHANGED
+#ifdef CHANGED
         case SC_PutChar:
         {
             DEBUG('s',"PutChar\n ");
             char c= machine->ReadRegister(4);
             consoledriver->PutChar(c);
+            break;
+        }
+        case SC_GetChar:
+        {
+            DEBUG('s',"GetChar\n");
+            printf("On passe ici dans le case SC_GetChar\n");
+            int c = consoledriver->GetChar();
+            machine->WriteRegister(2, c);
             break;
         }
         case SC_PutString:
@@ -107,9 +115,24 @@ ExceptionHandler (ExceptionType which)
             }
             break;
         }
-        #endif
+        case SC_GetString:
+        {
 
-		/*case SC_Exit:
+            DEBUG('s',"GetString\n");
+            printf("On passe ici dans le case SC_GetString\n");
+            int n=200;
+            char* s= (char *) malloc (n*sizeof(char));
+            consoledriver->GetString(s, n);
+            int chars_read=machine->copyStringToMachine(s, 4, MAX_STRING_SIZE);
+            while(chars_read>1){
+                s+=MAX_STRING_SIZE-1;
+                chars_read=machine->copyStringToMachine(s, 4, MAX_STRING_SIZE);
+            }
+            free(s);
+            break;
+        }
+
+		case SC_Exit:
 		  {
 			int exit = machine->ReadRegister (4);
 		    DEBUG ('s', "Shutdown, initiated by user program.\n");
@@ -117,7 +140,8 @@ ExceptionHandler (ExceptionType which)
 			printf("On passe ici dans le case SC_Exit\n");
 		    interrupt->Powerdown ();
 		    break;
-		  }*/
+		  }
+#endif
 		default:
 		  {
 		    printf("Unimplemented system call %d\n", type);
