@@ -125,7 +125,7 @@ ExceptionHandler (ExceptionType which)
             char* s= (char *) malloc (n*sizeof(char));
             consoledriver->GetString(s, n);
             for (int i=0; i<n ; i++){
-                printf("%d",s[i]);
+                printf("%c",s[i]);
                 if (s[i]=='\0'){
                     printf("ANTIZERO");
                     break;
