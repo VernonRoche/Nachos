@@ -121,9 +121,16 @@ ExceptionHandler (ExceptionType which)
             DEBUG('s',"GetString\n");
             printf("On passe ici dans le case SC_GetString\n");
             int to = machine->ReadRegister(4);
-            int n=200;
+            int n=20;
             char* s= (char *) malloc (n*sizeof(char));
             consoledriver->GetString(s, n);
+            for (int i=0; i<n ; i++){
+                printf("%d",s[i]);
+                if (s[i]=='\0'){
+                    printf("ANTIZERO");
+                    break;
+                }
+            }
             int chars_read=machine->copyStringToMachine(s, to, MAX_STRING_SIZE);
             printf("Executed first copyString\n");
             while(chars_read>1){

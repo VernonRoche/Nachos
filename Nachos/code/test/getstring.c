@@ -1,7 +1,7 @@
-#include "syscall.h"
-
 
 int main(){
-    GetString();
-    return 20;
+    int n=20;
+    char s_test[n];
+    GetString(s_test, n);
+    return 0;
 }
