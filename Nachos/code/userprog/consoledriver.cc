@@ -52,7 +52,7 @@ void ConsoleDriver::GetString(char *s, int n)
 #ifdef CHANGED
     for(int i=0; i<n-1 ; i++){
         s[i]=(char) this->GetChar();
-        if (s[i]==-1 || s[i]=='\n'){
+        if (s[i]==-1 || s[i]=='\n' || s[i]=='\0'){
             break;
         }
     }

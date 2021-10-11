@@ -123,19 +123,12 @@ ExceptionHandler (ExceptionType which)
             int to = machine->ReadRegister(4);
             int n=20;
             char* s= (char *) malloc (n*sizeof(char));
+			char* s_temp =s;
             consoledriver->GetString(s, n);
-            for (int i=0; i<n ; i++){
-                printf("%c",s[i]);
-                if (s[i]=='\0'){
-                    printf("ANTIZERO");
-                    break;
-                }
-            }
-            int chars_read=machine->copyStringToMachine(s, to, MAX_STRING_SIZE);
-            printf("Executed first copyString\n");
+            int chars_read=machine->copyStringToMachine(s_temp, to, MAX_STRING_SIZE);
             while(chars_read>1){
-                s+=MAX_STRING_SIZE-1;
-                chars_read=machine->copyStringToMachine(s, to, MAX_STRING_SIZE);
+                s_temp+=MAX_STRING_SIZE-1;
+                chars_read=machine->copyStringToMachine(s_temp, to, MAX_STRING_SIZE);
             }
             free(s);
             break;
