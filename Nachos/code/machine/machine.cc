@@ -142,11 +142,10 @@ int Machine::copyStringFromMachine(int from, char *to, unsigned size){
 }
 
 int Machine::copyStringToMachine(char* from, int to, unsigned size){
-    for (unsigned int i=0; i<size-1 ; i++, from++){
-        printf("Ca casse dans le WriteMem\n");
+    for (unsigned int i=0; i<size ; i++, from++){
         this->WriteMem(to, 1, from[i]);
         if (from[i]=='\0'){
-            return i+1;
+            return -1;
         }
     }
     return size;
