@@ -14,6 +14,8 @@ void PutChar(int ch); // Behaves like putchar(3S)
 int GetChar(); // Behaves like getchar(3S)
 #ifdef CHANGED
 void PutString(const char *s); // Behaves like fputs(3S)
+void PutInt(int n);
+void GetInt(int* n);
 #endif
 
 void GetString(char *s, int n); // Behaves like fgets(3S)

@@ -2,4 +2,4 @@ make clean -C ../
 make clean
 make -C ../
 make
-./nachos -x ../test/getstring
+./nachos -x ../test/putint

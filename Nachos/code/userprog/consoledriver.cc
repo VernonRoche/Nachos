@@ -61,4 +61,18 @@ void ConsoleDriver::GetString(char *s, int n)
     }
 #endif
 }
+
+#ifdef CHANGED
+void ConsoleDriver::PutInt(int n){
+    int buffer_size=15;
+    char buffer[buffer_size];
+    int cx;
+    cx = snprintf(buffer, buffer_size, "%d.0\n", n);
+    this->PutString(buffer);
+}
+
+void ConsoleDriver::GetInt(int* n){
+
+}
+#endif
 #endif // CHANGED

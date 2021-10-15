@@ -134,6 +134,15 @@ ExceptionHandler (ExceptionType which)
             break;
         }
 
+        case SC_PutInt:
+            {
+            DEBUG('s',"PutInt\n");
+            printf("On passe dans le PutInt\n");
+            int n=machine->ReadRegister(4);
+            consoledriver->PutInt(n);
+            break;
+            }
+
 		case SC_Exit:
 		  {
 			int exit = machine->ReadRegister (4);
