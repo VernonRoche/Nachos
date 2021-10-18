@@ -194,6 +194,24 @@ GetInt:
 	syscall
 	j	$31 /*r31 = adresse de retour, return*/
 	.end GetInt
+
+    .globl ThreadCreate
+    .ent   ThreadCreate
+ThreadCreate:
+	addiu $2,$0,SC_ThreadCreate /*r2 <- SC_ThreadCreate*/
+	syscall
+	j	$31 /*r31 = adresse de retour, return*/
+	.end ThreadCreate
+
+
+
+    .globl ThreadExit
+    .ent   ThreadExit
+ThreadExit:
+	addiu $2,$0,SC_ThreadExit /*r2 <- SC_GetInt*/
+	syscall
+	j	$31 /*r31 = adresse de retour, return*/
+	.end ThreadExit
 #endif
 
 /* dummy function to keep gcc happy */

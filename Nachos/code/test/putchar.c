@@ -8,8 +8,6 @@ void print(char c,int n){
         PutChar(c + i);
     }
     PutChar('\n');
-    //const char *test_string = "Petit test";
-    //PutString(test_string);
     
 #endif
 }

@@ -26,7 +26,7 @@
 #include "syscall.h"
 #ifdef CHANGED
 #include "consoledriver.h"
-#include "utilities.h"
+#include "userthread.h"
 #endif
 
 //----------------------------------------------------------------------
@@ -135,13 +135,34 @@ ExceptionHandler (ExceptionType which)
         }
 
         case SC_PutInt:
-            {
+        {
             DEBUG('s',"PutInt\n");
             printf("On passe dans le PutInt\n");
             int n=machine->ReadRegister(4);
             consoledriver->PutInt(n);
             break;
-            }
+        }
+        case SC_ThreadCreate:
+        {
+            DEBUG('s',"ThreadCreate\n");
+            printf("On passe dans le SC_CreateThread\n");
+            //GET PARAMS
+            int f= machine->ReadRegister(4);
+            int arg= machine->ReadRegister(5);
+            //LAUNCH FUNCTION
+            printf("This is f: %d . This is arg: %d \n", f,arg);
+            int return_code = do_ThreadCreate(f,arg);
+            break;
+        }
+
+        case SC_ThreadExit:
+        {
+            DEBUG('s',"ThreadExit\n");
+            printf("On passe dans le SC_ThreadExit\n");
+            //GET PARAMS
+            //LAUNCH FUNCTION
+            break;
+        }
 
 		case SC_Exit:
 		  {
