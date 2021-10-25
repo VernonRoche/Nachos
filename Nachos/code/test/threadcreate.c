@@ -12,8 +12,8 @@ void print_void(){
 
 int main(){
     char test='B';
-    ThreadCreate(print, &test);
+    ThreadCreate(print, test);
     Yield();
-    while(1){}
+    while(1);
     return 0;
 }
