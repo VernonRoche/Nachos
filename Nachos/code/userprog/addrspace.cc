@@ -177,6 +177,12 @@ AddrSpace::InitRegisters ()
 	   numPages * PageSize - 16);
 }
 
+#ifdef CHANGED
+int AddrSpace::AllocateUserStack(){
+    return UserStacksAreaSize - 256;//(numPages*PageSize);
+}
+#endif
+
 //----------------------------------------------------------------------
 // AddrSpace::Dump
 //      Dump program layout as SVG

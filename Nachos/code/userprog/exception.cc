@@ -142,6 +142,14 @@ ExceptionHandler (ExceptionType which)
             consoledriver->PutInt(n);
             break;
         }
+
+        case SC_Yield:
+        {
+            DEBUG('s',"Yield\n");
+            printf("On passe dans le SC_Yield\n");
+            currentThread->Yield();
+            break;
+        }
         case SC_ThreadCreate:
         {
             DEBUG('s',"ThreadCreate\n");
@@ -151,7 +159,7 @@ ExceptionHandler (ExceptionType which)
             int arg= machine->ReadRegister(5);
             //LAUNCH FUNCTION
             printf("This is f: %d . This is arg: %d \n", f,arg);
-            int return_code = do_ThreadCreate(f,arg);
+            do_ThreadCreate(f,arg);
             break;
         }
 
@@ -159,6 +167,7 @@ ExceptionHandler (ExceptionType which)
         {
             DEBUG('s',"ThreadExit\n");
             printf("On passe dans le SC_ThreadExit\n");
+            do_ThreadExit();
             //GET PARAMS
             //LAUNCH FUNCTION
             break;
@@ -168,7 +177,7 @@ ExceptionHandler (ExceptionType which)
 		  {
 			int exit = machine->ReadRegister (4);
 		    DEBUG ('s', "Shutdown, initiated by user program.\n");
-			printf("Code de retour = %d\n",exit);
+			printf("\n=====\nCode de retour = %d\n",exit);
 			printf("On passe ici dans le case SC_Exit\n");
 		    interrupt->Powerdown ();
 		    break;
