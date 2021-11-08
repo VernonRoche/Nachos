@@ -23,7 +23,11 @@ void StartUserThread(void* kernel_args){
     // allocated the stack; but subtract off a bit, to make sure we don't
     // accidentally reference off the end!
 
-    machine->WriteRegister (StackReg, currentThread->space->AllocateUserStack());
+    int allocatedUserStack = currentThread->space->AllocateUserStack();
+    if (allocatedUserStack == -1)
+        return;
+    machine->WriteRegister (StackReg, allocatedUserStack);
+    currentThread->space->thread_count++;
     DEBUG ('a', "Initializing stack register to 0x%x\n",
            currentThread->space->AllocateUserStack());
     machine->WriteRegister (4, args[1]);
@@ -33,6 +37,7 @@ void StartUserThread(void* kernel_args){
 }
 
 int do_ThreadCreate(int f, int arg){
+    printf("CURRENT THREADS BEFORE THREAD CREATION: %d\n",currentThread->space->thread_count);
     int *args{ new int[2]{f,arg} };
     Thread *t = new Thread ("forked thread");
     t->space=currentThread->space;
@@ -43,5 +48,10 @@ int do_ThreadCreate(int f, int arg){
 
 
 void do_ThreadExit(){
+    currentThread->space->thread_count--;
+    int current_thread_count=currentThread->space->thread_count;
+    printf("CURRENT THREADS AFTER THREAD KILLING: %d\n",current_thread_count);
+    if (current_thread_count <=0)
+        interrupt->Halt();
     currentThread->Finish();
 }

@@ -112,6 +112,9 @@ class Interrupt:public dontcopythis {
     					// by the hardware device simulators.
     
     void OneTick();       		// Advance simulated time
+    #ifdef CHANGED
+        void Halt();
+    #endif
 
   private:
     IntStatus level;		// are interrupts enabled or disabled?

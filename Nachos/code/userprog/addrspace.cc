@@ -21,6 +21,9 @@
 #include "noff.h"
 #include "syscall.h"
 #include "new"
+#ifdef CHANGED
+#include "synch.h"
+#endif
 
 //----------------------------------------------------------------------
 // SwapHeader
@@ -69,6 +72,12 @@ List AddrSpaceList;
 AddrSpace::AddrSpace (OpenFile * executable)
 {
     unsigned int i, size;
+    #ifdef CHANGED
+        user_stack_slots = new BitMap(UserStacksAreaSize/256);
+        user_stack_slots->Mark(0);
+        thread_count=1;
+    #endif
+
 
     executable->ReadAt (&noffH, sizeof (noffH), 0);
     if ((noffH.noffMagic != NOFFMAGIC) &&
@@ -179,7 +188,11 @@ AddrSpace::InitRegisters ()
 
 #ifdef CHANGED
 int AddrSpace::AllocateUserStack(){
-    return UserStacksAreaSize - 256;//(numPages*PageSize);
+    int next_free_slot=AddrSpace::user_stack_slots->Find();
+    if (next_free_slot == -1)
+        return -1;
+    AddrSpace::user_stack_slots->Mark(next_free_slot);
+    return UserStacksAreaSize-next_free_slot*256;//(numPages*PageSize);
 }
 #endif
 

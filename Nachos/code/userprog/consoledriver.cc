@@ -4,34 +4,53 @@
 #include "consoledriver.h"
 #include "synch.h"
 
+// readAvail -> mutexR dans le cours
 static Semaphore *readAvail;
-static Semaphore *writeDone;
-static void ReadAvailHandler(void *arg) { (void) arg; readAvail->V(); }
-static void WriteDoneHandler(void *arg) { (void) arg; writeDone->V(); }
+static Semaphore *writeToken;
+static Semaphore *waitingRoom;
+static int semaphore_number;
+static void ReadAvailHandler(void *arg) { (void) arg; /*readAvail->V();*/ }
+static void WriteTokenHandler(void *arg) { (void) arg; /*writeToken->V();*/ }
 ConsoleDriver::ConsoleDriver(const char *in, const char *out)
 {
-readAvail = new Semaphore("read avail", 0);
-writeDone = new Semaphore("write done", 0);
-console = new Console (in, out, ReadAvailHandler, WriteDoneHandler, NULL);
+readAvail = new Semaphore("read avail", 1);
+writeToken = new Semaphore("write token", 1);
+waitingRoom = new Semaphore("waiting room", 1);
+semaphore_number=0;
+console = new Console (in, out, ReadAvailHandler, WriteTokenHandler, NULL);
 }
 ConsoleDriver::~ConsoleDriver()
 {
 delete console;
-delete writeDone;
+delete writeToken;
 delete readAvail;
+delete waitingRoom;
 }
 void ConsoleDriver::PutChar(int ch)
 {
    #ifdef CHANGED
+    waitingRoom->P();
+    writeToken->P ();
+    waitingRoom->V();
     console->TX (ch);
-    writeDone->P ();
+    writeToken->V();
    #endif
 }
 int ConsoleDriver::GetChar()
 {
 #ifdef CHANGED
+    waitingRoom->P();
     readAvail->P ();
-    return console->RX ();
+    if (++semaphore_number == 1) //pathfinder
+        writeToken->P();
+    readAvail->V();
+    waitingRoom->V();
+    int read_results=console->RX ();
+    readAvail->P();
+    if (--semaphore_number == 0) //last to leave
+        writeToken->V();
+    readAvail->V();
+    return read_results;
 #endif
 
 }
@@ -71,8 +90,5 @@ void ConsoleDriver::PutInt(int n){
     this->PutString(buffer);
 }
 
-void ConsoleDriver::GetInt(int* n){
-
-}
 #endif
 #endif // CHANGED

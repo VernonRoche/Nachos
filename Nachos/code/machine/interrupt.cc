@@ -251,6 +251,14 @@ Interrupt::Powerdown()
     Cleanup();     // Never returns.
 }
 
+#ifdef CHANGED
+void
+Interrupt::Halt()
+{
+    Powerdown();
+}
+#endif
+
 //----------------------------------------------------------------------
 // Interrupt::Schedule
 // 	Arrange for the CPU to be interrupted when simulated time

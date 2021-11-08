@@ -18,12 +18,20 @@
 #include "translate.h"
 #include "noff.h"
 #include "list.h"
+#ifdef CHANGED
+#include "bitmap.h"
+class Semaphore;
+#endif
 
 #define UserStacksAreaSize		1024	// increase this as necessary!
 
 class AddrSpace:public dontcopythis
 {
   public:
+    #ifdef CHANGED
+        unsigned int thread_count;
+        BitMap* user_stack_slots;
+    #endif
     AddrSpace (OpenFile * executable);	// Create an address space,
     // initializing it with the program
     // stored in the file "executable"

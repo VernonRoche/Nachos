@@ -158,7 +158,7 @@ ExceptionHandler (ExceptionType which)
             int f= machine->ReadRegister(4);
             int arg= machine->ReadRegister(5);
             //LAUNCH FUNCTION
-            printf("This is f: %d . This is arg: %d \n", f,arg);
+            //printf("This is f: %d . This is arg: %d \n", f,arg);
             do_ThreadCreate(f,arg);
             break;
         }
