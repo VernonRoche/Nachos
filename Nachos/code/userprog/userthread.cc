@@ -51,10 +51,13 @@ int do_ThreadCreate(int f, int arg){
 
 
 void do_ThreadExit(){
+    currentThread->space->thread_waiting_room->P();
     currentThread->space->thread_count--;
     int current_thread_count=currentThread->space->thread_count;
+    currentThread->space->DeallocateUserStack(machine->ReadRegister(StackReg));
     printf("CURRENT THREADS AFTER THREAD KILLING: %d\n",current_thread_count);
     if (current_thread_count <=0)
         interrupt->Halt();
     currentThread->Finish();
+    currentThread->space->thread_waiting_room->V();
 }

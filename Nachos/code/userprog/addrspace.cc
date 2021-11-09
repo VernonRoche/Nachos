@@ -195,6 +195,10 @@ int AddrSpace::AllocateUserStack(){
     AddrSpace::user_stack_slots->Mark(next_free_slot);
     return UserStacksAreaSize-next_free_slot*256;//(numPages*PageSize);
 }
+
+void AddrSpace::DeallocateUserStack(int userStack){
+    AddrSpace::user_stack_slots->Clear(userStack/256);
+};
 #endif
 
 //----------------------------------------------------------------------

@@ -8,6 +8,7 @@
 static Semaphore *readAvail;
 static Semaphore *writeToken;
 static Semaphore *waitingRoom;
+static Semaphore *stringWriteToken;
 static int semaphore_number;
 static void ReadAvailHandler(void *arg) { (void) arg; /*readAvail->V();*/ }
 static void WriteTokenHandler(void *arg) { (void) arg; /*writeToken->V();*/ }
@@ -16,6 +17,7 @@ ConsoleDriver::ConsoleDriver(const char *in, const char *out)
 readAvail = new Semaphore("read avail", 1);
 writeToken = new Semaphore("write token", 1);
 waitingRoom = new Semaphore("waiting room", 1);
+stringWriteToken = new Semaphore("string write token", 1);
 semaphore_number=0;
 console = new Console (in, out, ReadAvailHandler, WriteTokenHandler, NULL);
 }
@@ -57,13 +59,14 @@ int ConsoleDriver::GetChar()
 #ifdef CHANGED
 void ConsoleDriver::PutString(const char s[])
 {
+    stringWriteToken->P();
     for(int i=0; i<MAX_STRING_SIZE ; i++){
         this->PutChar( (int) s[i]);
         if (s[i]=='\0'){
             break;
         }
     }
-
+    stringWriteToken->V();
 }
 #endif
 void ConsoleDriver::GetString(char *s, int n)

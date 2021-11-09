@@ -32,6 +32,7 @@ class AddrSpace:public dontcopythis
         unsigned int thread_count;
         BitMap* user_stack_slots;
         int AllocateUserStack();
+        void DeallocateUserStack(int userStack);
         Semaphore* thread_waiting_room;
     #endif
     AddrSpace (OpenFile * executable);	// Create an address space,
