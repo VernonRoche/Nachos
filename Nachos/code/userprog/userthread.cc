@@ -8,6 +8,7 @@ typedef struct{
 void StartUserThread(void* kernel_args){
     int i;
     int* args = (int*) kernel_args;
+    printf("Ca casse ici!!!!");
 
     for (i = 0; i < NumTotalRegs; i++)
         machine->WriteRegister (i, 0);
@@ -37,11 +38,13 @@ void StartUserThread(void* kernel_args){
 }
 
 int do_ThreadCreate(int f, int arg){
+    currentThread->space->thread_waiting_room->P();
     printf("CURRENT THREADS BEFORE THREAD CREATION: %d\n",currentThread->space->thread_count);
     int *args{ new int[2]{f,arg} };
     Thread *t = new Thread ("forked thread");
     t->space=currentThread->space;
     t->Start (StartUserThread, args);
+    currentThread->space->thread_waiting_room->V();
     return 0;
 }
 

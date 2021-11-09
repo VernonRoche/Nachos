@@ -9,6 +9,6 @@ int main(){
     char test='B';
     ThreadCreate(print, test);
     print('A');
-    ThreadExit();
+    while(1);
     return 0;
 }

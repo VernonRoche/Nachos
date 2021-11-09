@@ -76,6 +76,7 @@ AddrSpace::AddrSpace (OpenFile * executable)
         user_stack_slots = new BitMap(UserStacksAreaSize/256);
         user_stack_slots->Mark(0);
         thread_count=1;
+        thread_waiting_room=new Semaphore("thread waiting room", 1);
     #endif
 
 

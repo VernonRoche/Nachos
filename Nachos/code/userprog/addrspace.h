@@ -31,6 +31,8 @@ class AddrSpace:public dontcopythis
     #ifdef CHANGED
         unsigned int thread_count;
         BitMap* user_stack_slots;
+        int AllocateUserStack();
+        Semaphore* thread_waiting_room;
     #endif
     AddrSpace (OpenFile * executable);	// Create an address space,
     // initializing it with the program
@@ -39,7 +41,6 @@ class AddrSpace:public dontcopythis
 
     void InitRegisters ();	// Initialize user-level CPU registers,
     // before jumping to user code
-    int AllocateUserStack();
 
     void SaveState ();		// Save/restore address space-specific
     void RestoreState ();	// info on a context switch 
