@@ -52,6 +52,7 @@ class AddrSpace:public dontcopythis
 				// Dump program layout as SVG
     unsigned NumPages() { return numPages; }
 
+
   private:
     NoffHeader noffH;		// Program layout
 

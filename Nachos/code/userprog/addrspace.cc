@@ -25,6 +25,32 @@
 #include "synch.h"
 #endif
 
+#ifdef CHANGED
+static void
+ReadAtVirtual(OpenFile *executable, int virtualaddr,
+                          int numBytes, int position, TranslationEntry *pageTable,
+                          unsigned int numPages){
+
+    //Set pageTable to the one we pass as parameter
+    TranslationEntry* oldTable=machine->currentPageTable;
+    unsigned int oldTableSize=machine->currentPageTableSize;
+    machine->currentPageTable = pageTable;
+    machine->currentPageTableSize = numPages;
+
+    //Translate
+    char tampon_temp[numBytes];
+    executable->ReadAt((void*) tampon_temp, numBytes, position);
+    for (int i=0;i<numBytes;i++){
+        machine->WriteMem(virtualaddr+i, 1, tampon_temp[i]);
+    }
+
+    //Restore pageTable in machine
+    machine->currentPageTable = oldTable;
+    machine->currentPageTableSize = oldTableSize;
+
+}
+#endif
+
 //----------------------------------------------------------------------
 // SwapHeader
 //      Do little endian to big endian conversion on the bytes in the 
@@ -120,17 +146,15 @@ AddrSpace::AddrSpace (OpenFile * executable)
       {
 	  DEBUG ('a', "Initializing code segment, at 0x%x, size 0x%x\n",
 		 noffH.code.virtualAddr, noffH.code.size);
-	  executable->ReadAt (&(machine->mainMemory[noffH.code.virtualAddr]),
-			      noffH.code.size, noffH.code.inFileAddr);
+	  //executable->ReadAt (&(machine->mainMemory[noffH.code.virtualAddr]),noffH.code.size, noffH.code.inFileAddr);
+      ReadAtVirtual(executable, /*virtualaddr*/noffH.code.virtualAddr,/*numBytes*/noffH.code.size, /*position*/noffH.code.inFileAddr, pageTable, numPages);
       }
     if (noffH.initData.size > 0)
       {
 	  DEBUG ('a', "Initializing data segment, at 0x%x, size 0x%x\n",
 		 noffH.initData.virtualAddr, noffH.initData.size);
-	  executable->ReadAt (&
-			      (machine->mainMemory
-			       [noffH.initData.virtualAddr]),
-			      noffH.initData.size, noffH.initData.inFileAddr);
+	  //executable->ReadAt (&(machine->mainMemory[noffH.initData.virtualAddr]),noffH.initData.size, noffH.initData.inFileAddr);
+      ReadAtVirtual(executable, /*virtualaddr*/noffH.initData.virtualAddr,/*numBytes*/noffH.initData.size, /*position*/noffH.initData.inFileAddr, pageTable, numPages);
       }
 
     DEBUG ('a', "Area for stacks at 0x%x, size 0x%x\n",
@@ -193,11 +217,11 @@ int AddrSpace::AllocateUserStack(){
     if (next_free_slot == -1)
         return -1;
     AddrSpace::user_stack_slots->Mark(next_free_slot);
-    return UserStacksAreaSize-next_free_slot*256;//(numPages*PageSize);
+    return numPages*PageSize-next_free_slot*256;//(numPages*PageSize);
 }
 
 void AddrSpace::DeallocateUserStack(int userStack){
-    AddrSpace::user_stack_slots->Clear(userStack/256);
+    AddrSpace::user_stack_slots->Clear(userStack/256);//////////////////
 };
 #endif
 
@@ -316,3 +340,4 @@ AddrSpace::RestoreState ()
     machine->currentPageTable = pageTable;
     machine->currentPageTableSize = numPages;
 }
+

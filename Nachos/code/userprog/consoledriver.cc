@@ -4,28 +4,35 @@
 #include "consoledriver.h"
 #include "synch.h"
 
-// readAvail -> mutexR dans le cours
+
 static Semaphore *readAvail;
+static Semaphore *writeDone;
+static Semaphore *readToken;
 static Semaphore *writeToken;
 static Semaphore *waitingRoom;
 static Semaphore *stringWriteToken;
 static int semaphore_number;
-static void ReadAvailHandler(void *arg) { (void) arg; /*readAvail->V();*/ }
-static void WriteTokenHandler(void *arg) { (void) arg; /*writeToken->V();*/ }
+static void ReadAvailHandler(void *arg) { (void) arg; readAvail->V(); }
+static void WriteDoneHandler(void *arg) { (void) arg; writeDone->V(); }
 ConsoleDriver::ConsoleDriver(const char *in, const char *out)
 {
-readAvail = new Semaphore("read avail", 1);
+readAvail = new Semaphore("read avail", 0);
+writeDone = new Semaphore("write done", 0);
+readToken = new Semaphore("read token", 1);
 writeToken = new Semaphore("write token", 1);
 waitingRoom = new Semaphore("waiting room", 1);
 stringWriteToken = new Semaphore("string write token", 1);
 semaphore_number=0;
-console = new Console (in, out, ReadAvailHandler, WriteTokenHandler, NULL);
+console = new Console (in, out, ReadAvailHandler, WriteDoneHandler, NULL);
 }
 ConsoleDriver::~ConsoleDriver()
 {
 delete console;
-delete writeToken;
+delete writeDone;
 delete readAvail;
+delete writeToken;
+delete readToken;
+delete stringWriteToken;
 delete waitingRoom;
 }
 void ConsoleDriver::PutChar(int ch)
@@ -35,6 +42,7 @@ void ConsoleDriver::PutChar(int ch)
     writeToken->P ();
     waitingRoom->V();
     console->TX (ch);
+    writeDone->P();
     writeToken->V();
    #endif
 }
@@ -42,16 +50,17 @@ int ConsoleDriver::GetChar()
 {
 #ifdef CHANGED
     waitingRoom->P();
-    readAvail->P ();
+    readToken->P ();
     if (++semaphore_number == 1) //pathfinder
         writeToken->P();
-    readAvail->V();
+    readToken->V();
     waitingRoom->V();
-    int read_results=console->RX ();
     readAvail->P();
+    int read_results=console->RX ();
+    readToken->P();
     if (--semaphore_number == 0) //last to leave
         writeToken->V();
-    readAvail->V();
+    readToken->V();
     return read_results;
 #endif
 
@@ -88,8 +97,7 @@ void ConsoleDriver::GetString(char *s, int n)
 void ConsoleDriver::PutInt(int n){
     int buffer_size=15;
     char buffer[buffer_size];
-    int cx;
-    cx = snprintf(buffer, buffer_size, "%d.0\n", n);
+    snprintf(buffer, buffer_size, "%d.0\n", n);
     this->PutString(buffer);
 }
 

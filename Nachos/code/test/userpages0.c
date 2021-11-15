@@ -1,15 +1,18 @@
 #include "syscall.h"
 
 void print(char c,int n){
+    int i;
 
-    for (int i = 0; i < n; i++) {
+#if 1
+    for (i = 0; i < n; i++) {
         PutChar(c + i);
     }
     PutChar('\n');
 
+#endif
 }
 
 int main(){
-    print('a',5);
-    return 0;
+    print('a',6);
+    return 8;
 }
