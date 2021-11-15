@@ -1,5 +1,6 @@
 #include "thread.h"
 #include "system.h"
+#include "synch.h"
 
 typedef struct{
     int f,a;
@@ -40,6 +41,8 @@ void StartUserThread(void* kernel_args){
 int do_ThreadCreate(int f, int arg){
     currentThread->space->thread_waiting_room->P();
     printf("CURRENT THREADS BEFORE THREAD CREATION: %d\n",currentThread->space->thread_count);
+    int user_stack = machine->ReadRegister(StackReg);
+    printf("UserStack: %d\n", user_stack);
     int *args{ new int[2]{f,arg} };
     Thread *t = new Thread ("forked thread");
     t->space=currentThread->space;
@@ -54,6 +57,8 @@ void do_ThreadExit(){
     currentThread->space->thread_waiting_room->P();
     currentThread->space->thread_count--;
     int current_thread_count=currentThread->space->thread_count;
+    int user_stack = machine->ReadRegister(StackReg);
+    printf("UserStack: %d\n", user_stack);
     currentThread->space->DeallocateUserStack(machine->ReadRegister(StackReg));
     printf("CURRENT THREADS AFTER THREAD KILLING: %d\n",current_thread_count);
     if (current_thread_count <=0)
