@@ -9,7 +9,6 @@ typedef struct{
 void StartUserThread(void* kernel_args){
     int i;
     int* args = (int*) kernel_args;
-    printf("Ca casse ici!!!!");
 
     for (i = 0; i < NumTotalRegs; i++)
         machine->WriteRegister (i, 0);
@@ -25,9 +24,12 @@ void StartUserThread(void* kernel_args){
     // allocated the stack; but subtract off a bit, to make sure we don't
     // accidentally reference off the end!
 
-    int allocatedUserStack = currentThread->space->AllocateUserStack();
+    int next_free_slot = currentThread->space->AllocateUserStack();
+    currentThread->bitmap_index=next_free_slot;
+    int allocatedUserStack=currentThread->space->NumPages()*PageSize-(next_free_slot*256);
     if (allocatedUserStack == -1)
         return;
+
     machine->WriteRegister (StackReg, allocatedUserStack);
     currentThread->space->thread_count++;
     DEBUG ('a', "Initializing stack register to 0x%x\n",
@@ -40,9 +42,11 @@ void StartUserThread(void* kernel_args){
 
 int do_ThreadCreate(int f, int arg){
     currentThread->space->thread_waiting_room->P();
+    if (currentThread->space->user_stack_slots->Find() == -1) {
+        currentThread->space->thread_waiting_room->V();
+        return -1;
+    }
     printf("CURRENT THREADS BEFORE THREAD CREATION: %d\n",currentThread->space->thread_count);
-    int user_stack = machine->ReadRegister(StackReg);
-    printf("UserStack: %d\n", user_stack);
     int *args{ new int[2]{f,arg} };
     Thread *t = new Thread ("forked thread");
     t->space=currentThread->space;
@@ -57,9 +61,8 @@ void do_ThreadExit(){
     currentThread->space->thread_waiting_room->P();
     currentThread->space->thread_count--;
     int current_thread_count=currentThread->space->thread_count;
-    int user_stack = machine->ReadRegister(StackReg);
-    printf("UserStack: %d\n", user_stack);
-    currentThread->space->DeallocateUserStack(machine->ReadRegister(StackReg));
+    printf("BITMAP INDEX OF LEAVING THREAD: %d\n", currentThread->bitmap_index);
+    currentThread->space->DeallocateUserStack(currentThread->bitmap_index);
     printf("CURRENT THREADS AFTER THREAD KILLING: %d\n",current_thread_count);
     if (current_thread_count <=0)
         interrupt->Halt();

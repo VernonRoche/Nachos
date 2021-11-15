@@ -8,7 +8,7 @@ void print(char c){
 int main(){
     char test='B';
     ThreadCreate(print, test);
+    ThreadCreate(print, test);
     print('A');
-    while(1);
     return 0;
 }

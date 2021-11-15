@@ -151,6 +151,9 @@ class Thread:public dontcopythis
     void RestoreUserState ();	// restore user-level register state
 
     AddrSpace *space;		// Address space this thread is running in.
+    #ifdef CHANGED
+        int bitmap_index=0;
+    #endif
 #endif
 };
 

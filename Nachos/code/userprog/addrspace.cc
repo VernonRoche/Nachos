@@ -217,11 +217,11 @@ int AddrSpace::AllocateUserStack(){
     if (next_free_slot == -1)
         return -1;
     AddrSpace::user_stack_slots->Mark(next_free_slot);
-    return numPages*PageSize-next_free_slot*256;//(numPages*PageSize);
+    return next_free_slot;
 }
 
-void AddrSpace::DeallocateUserStack(int userStack){
-    AddrSpace::user_stack_slots->Clear(userStack/256);//////////////////
+void AddrSpace::DeallocateUserStack(int bitmap_index){
+    AddrSpace::user_stack_slots->Clear(bitmap_index);
 };
 #endif
 

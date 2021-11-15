@@ -1,3 +1,3 @@
 make -C ../
 make
-./nachos -rs 3103 -x ../test/userpages0
+./nachos -rs 3103 -x ../test/threadcreate
