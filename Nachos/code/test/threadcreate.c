@@ -1,14 +1,16 @@
 
 
-void print(char c){
-    PutChar(c);
+void print(char* c){
+    PutString(c);
     ThreadExit();
 }
 
 int main(){
-    char test='B';
+    char* test="Hello\n";
     ThreadCreate(print, test);
     ThreadCreate(print, test);
-    print('A');
+    ThreadCreate(print, test);
+    ThreadCreate(print, test);
+    print(test);
     return 0;
 }

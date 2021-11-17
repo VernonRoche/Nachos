@@ -23,7 +23,7 @@
 class Semaphore;
 #endif
 
-#define UserStacksAreaSize		1024	// increase this as necessary!
+#define UserStacksAreaSize		2048	// increase this as necessary!
 
 class AddrSpace:public dontcopythis
 {

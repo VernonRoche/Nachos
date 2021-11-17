@@ -100,7 +100,7 @@ AddrSpace::AddrSpace (OpenFile * executable)
     unsigned int i, size;
     #ifdef CHANGED
         user_stack_slots = new BitMap(UserStacksAreaSize/256);
-        user_stack_slots->Mark(0);
+        user_stack_slots->Find();
         thread_count=1;
         thread_waiting_room=new Semaphore("thread waiting room", 1);
     #endif
@@ -216,7 +216,6 @@ int AddrSpace::AllocateUserStack(){
     int next_free_slot=AddrSpace::user_stack_slots->Find();
     if (next_free_slot == -1)
         return -1;
-    AddrSpace::user_stack_slots->Mark(next_free_slot);
     return next_free_slot;
 }
 

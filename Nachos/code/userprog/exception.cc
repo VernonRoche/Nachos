@@ -168,8 +168,6 @@ ExceptionHandler (ExceptionType which)
             DEBUG('s',"ThreadExit\n");
             printf("On passe dans le SC_ThreadExit\n");
             do_ThreadExit();
-            //GET PARAMS
-            //LAUNCH FUNCTION
             break;
         }
 
