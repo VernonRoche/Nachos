@@ -15,6 +15,7 @@
 #ifdef CHANGED
 #ifdef USER_PROGRAM
 ConsoleDriver *consoledriver;
+#include "pageprovider.h"
 #endif
 #endif
 
@@ -39,6 +40,7 @@ SynchDisk *synchDisk;
 
 #ifdef USER_PROGRAM		// requires either FILESYS or FILESYS_STUB
 Machine *machine;		// user program memory and registers
+PageProvider *pageProvider;
 #endif
 
 #ifdef NETWORK

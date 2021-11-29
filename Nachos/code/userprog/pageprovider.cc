@@ -1,5 +1,4 @@
 #include "pageprovider.h"
-#include "bitmap.h"
 #include "system.h"
 
 PageProvider::PageProvider(int numPages)

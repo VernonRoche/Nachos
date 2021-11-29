@@ -19,7 +19,7 @@
 #ifdef CHANGED
 #ifdef USER_PROGRAM
 #include <consoledriver.h>
-#include "pageprovider.h"
+class PageProvider;
 extern ConsoleDriver *consoledriver;
 extern PageProvider* pageProvider;
 #define MAX_STRING_SIZE 8
