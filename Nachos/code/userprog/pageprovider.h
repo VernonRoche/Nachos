@@ -1,13 +1,16 @@
 #include "bitmap.h"
 
-class pageProvider
+class PageProvider
 {
 private:
     /* data */
-    BitMap *b;
+    BitMap *pages;
 public:
-    pageProvider(/* args */);
-    ~pageProvider();
+    PageProvider(int numPages);
+    ~PageProvider();
+    int GetEmptyPage();
+    void ReleasePage(int page_index);
+    int NumAvailPage();
 };
 
 

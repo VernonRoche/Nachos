@@ -133,7 +133,7 @@ AddrSpace::AddrSpace (OpenFile * executable)
     for (i = 0; i < numPages; i++)
       {
       #ifdef CHANGED
-      pageTable[i].physicalPage = pageProvider->getEmptyPage;	// for now, phys page # = virtual page # /*on avait avant i*/
+      pageTable[i].physicalPage = pageProvider->GetEmptyPage();	// for now, phys page # = virtual page # /*on avait avant i*/
       #endif
 	  pageTable[i].valid = TRUE;
 	  pageTable[i].use = FALSE;
