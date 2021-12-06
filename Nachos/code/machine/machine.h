@@ -25,6 +25,9 @@
 #include "utility.h"
 #include "translate.h"
 #include "disk.h"
+#ifdef CHANGED
+class Semaphore;
+#endif
 
 // Definitions related to the size, and format of user memory
 
@@ -181,6 +184,10 @@ class Machine:public dontcopythis {
 				// code and data, while executing
     int registers[NumTotalRegs]; // CPU registers, for executing user programs
 
+	#ifdef CHANGED
+	int numberProcesses = 1;
+	Semaphore* process_waiting_room;
+	#endif
 
 // NOTE: the hardware translation of virtual addresses in the user program
 // to physical addresses (relative to the beginning of "mainMemory")
