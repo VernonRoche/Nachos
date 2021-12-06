@@ -15,14 +15,14 @@ PageProvider::~PageProvider()
 }
 
 int PageProvider::GetEmptyPage(){
-    page_providingng_waiting_room->P();
+    page_providing_waiting_room->P();
     int next_free_index = pages->Find();
     if (next_free_index<0){
         return -1;
     }
     memset((next_free_index * PageSize)+(machine->mainMemory), 0, PageSize);
     reserved_pages++;
-    page_prodiving_waiting_room->V();
+    page_providing_waiting_room->V();
     return next_free_index;
 }
 
