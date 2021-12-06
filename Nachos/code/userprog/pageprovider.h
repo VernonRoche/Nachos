@@ -7,7 +7,7 @@ private:
     /* data */
     BitMap *pages;
     int reserved_pages;
-    Semaphore page_providing_waiting_room;
+    Semaphore* page_providing_waiting_room;
 
 public:
     PageProvider(int numPages);
