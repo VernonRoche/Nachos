@@ -27,6 +27,7 @@
 #ifdef CHANGED
 #include "consoledriver.h"
 #include "userthread.h"
+#include "forkprocess.h"
 #endif
 
 //----------------------------------------------------------------------
@@ -184,6 +185,17 @@ ExceptionHandler (ExceptionType which)
         machine->process_wainting_room->V();
 		    break;
 		  }
+
+          case SC_ForkExec:
+          {
+              DEBUG('s',"ForkExec\n");
+              printf("On passe dans le SC_ForkExec\n");
+              int file = machine->ReadRegister(4);
+              char filename[MAX_STRING_SIZE];
+              machine->copyStringFromMachine(file, filename, MAX_STRING_SIZE);
+              do_ForkProcess(filename);
+              break;
+          }
 #endif
 		default:
 		  {
