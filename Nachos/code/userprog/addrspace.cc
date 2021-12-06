@@ -176,7 +176,7 @@ AddrSpace::AddrSpace (OpenFile * executable)
 AddrSpace::~AddrSpace ()
 {
 #ifdef CHANGED
-    for (i = 0; i < numPages; i++)
+    for (unsigned int i = 0; i < numPages; i++)
     {
         pageProvider->ReleasePage(pageTable[i].physicalPage);	/*on avait avant i*/
     }
