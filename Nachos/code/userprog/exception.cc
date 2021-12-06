@@ -173,11 +173,15 @@ ExceptionHandler (ExceptionType which)
 
 		case SC_Exit:
 		  {
-			int exit = machine->ReadRegister (4);
+        machine->process_wainting_room->P();
+			  int exit = machine->ReadRegister (4);
 		    DEBUG ('s', "Shutdown, initiated by user program.\n");
-			printf("\n=====\nCode de retour = %d\n",exit);
-			printf("On passe ici dans le case SC_Exit\n");
-		    interrupt->Powerdown ();
+			  printf("\n=====\nCode de retour = %d\n",exit);
+			  printf("On passe ici dans le case SC_Exit\n");
+        machine->numberProcesses--;
+        if(machine->numberProcesses == 0)
+		      interrupt->Powerdown ();
+        machine->process_wainting_room->V();
 		    break;
 		  }
 #endif
