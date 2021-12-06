@@ -178,7 +178,7 @@ AddrSpace::~AddrSpace ()
 #ifdef CHANGED
     for (i = 0; i < numPages; i++)
     {
-        pageTable[i].physicalPage = pageProvider->ReleasePage(pageTable[i].physicalPage);	/*on avait avant i*/
+        pageProvider->ReleasePage(pageTable[i].physicalPage);	/*on avait avant i*/
     }
 #endif
   delete [] pageTable;
