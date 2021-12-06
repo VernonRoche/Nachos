@@ -212,6 +212,15 @@ ThreadExit:
 	syscall
 	j	$31 /*r31 = adresse de retour, return*/
 	.end ThreadExit
+
+
+	.globl ForkExec
+    .ent   ForkExec
+ForkExec:
+    addiu $2,$0,SC_ForkExec
+    syscall
+    j	$31
+    .end ForkExec
 #endif
 
 /* dummy function to keep gcc happy */
