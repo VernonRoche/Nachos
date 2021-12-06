@@ -15,7 +15,7 @@ PageProvider::~PageProvider()
 }
 
 int PageProvider::GetEmptyPage(){
-    page_prodiving_waiting_room->P();
+    page_providingng_waiting_room->P();
     int next_free_index = pages->Find();
     if (next_free_index<0){
         return -1;
@@ -30,7 +30,7 @@ void PageProvider::ReleasePage(int page_index){
     page_providing_waiting_room->P();
     reserved_pages--;
     pages->Clear(page_index);
-    page_prodiving_waiting_room->V();
+    page_providing_waiting_room->V();
 }
 
 int PageProvider::NumAvailPage(){
