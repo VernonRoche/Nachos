@@ -22,7 +22,7 @@
 class PageProvider;
 extern ConsoleDriver *consoledriver;
 extern PageProvider* pageProvider;
-#define MAX_STRING_SIZE 8
+#define MAX_STRING_SIZE 64
 #endif
 #endif
 

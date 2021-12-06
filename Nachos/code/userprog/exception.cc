@@ -28,6 +28,7 @@
 #include "consoledriver.h"
 #include "userthread.h"
 #include "forkprocess.h"
+#include "synch.h"
 #endif
 
 //----------------------------------------------------------------------
@@ -174,28 +175,38 @@ ExceptionHandler (ExceptionType which)
 
 		case SC_Exit:
 		  {
-        machine->process_wainting_room->P();
+        machine->process_waiting_room->P();
 			  int exit = machine->ReadRegister (4);
 		    DEBUG ('s', "Shutdown, initiated by user program.\n");
 			  printf("\n=====\nCode de retour = %d\n",exit);
 			  printf("On passe ici dans le case SC_Exit\n");
+        printf("Nombre de processus = %d\n",machine->numberProcesses);
         machine->numberProcesses--;
-        if(machine->numberProcesses == 0)
-		      interrupt->Powerdown ();
-        machine->process_wainting_room->V();
+        printf("Nombre de processus après = %d\n",machine->numberProcesses);
+        if(machine->numberProcesses == 0){
+		      printf("On passe dans le Powerdown\n");
+          interrupt->Powerdown ();
+        }
+        machine->process_waiting_room->V();
+        delete currentThread->space;
+        currentThread->Finish();
+        printf("On est après le V\n");
 		    break;
 		  }
 
-          case SC_ForkExec:
-          {
-              DEBUG('s',"ForkExec\n");
-              printf("On passe dans le SC_ForkExec\n");
-              int file = machine->ReadRegister(4);
-              char filename[MAX_STRING_SIZE];
-              machine->copyStringFromMachine(file, filename, MAX_STRING_SIZE);
-              do_ForkProcess(filename);
-              break;
-          }
+    case SC_ForkExec:
+      {
+        machine->process_waiting_room->P();
+        DEBUG('s',"ForkExec\n");
+        printf("On passe dans le SC_ForkExec\n");
+        int file = machine->ReadRegister(4);
+        char filename[MAX_STRING_SIZE];
+        machine->copyStringFromMachine(file, filename, MAX_STRING_SIZE);
+        do_ForkProcess(filename);
+        machine->numberProcesses++;
+        machine->process_waiting_room->V();
+        break;
+      }
 #endif
 		default:
 		  {
